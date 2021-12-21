@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import BrandBar from '../components/BrandBar';
 import TypeBar from '../components/TypeBar';
-import DeviceList from "../components/DeviceList";
+import DeviceList from '../components/DeviceList';
 
 const Shop = () => {
   return (

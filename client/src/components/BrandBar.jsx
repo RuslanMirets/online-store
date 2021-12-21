@@ -8,9 +8,12 @@ const BrandBar = observer(() => {
   return (
     <Row className="d-flex gap-3">
       {device.brands.map((brand) => (
-        <Card style={{ cursor: 'pointer', width: 'auto' }} key={brand.id} className="p-3"
-              onClick={() => device.setSelectedBrand(brand)}
-              border={brand.id === device.selectedBrand.id ? 'danger' : 'light'}>
+        <Card
+          style={{ cursor: 'pointer', width: 'auto' }}
+          key={brand.id}
+          className="p-3"
+          onClick={() => device.setSelectedBrand(brand)}
+          border={brand.id === device.selectedBrand.id ? 'danger' : 'light'}>
           {brand.name}
         </Card>
       ))}
