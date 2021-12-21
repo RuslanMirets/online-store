@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Form,
@@ -9,8 +9,17 @@ import {
   ModalTitle,
 } from 'react-bootstrap';
 import ModalHeader from 'react-bootstrap/esm/ModalHeader';
+import { createBrand } from '../../http/deviceAPI';
 
 const CreateBrand = ({ show, onHide }) => {
+  const [value, setValue] = useState('');
+  const addBrand = () => {
+    createBrand({ name: value }).then((data) => {
+      setValue('');
+      onHide();
+    });
+  };
+
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
       <ModalHeader closeButton>
@@ -18,14 +27,18 @@ const CreateBrand = ({ show, onHide }) => {
       </ModalHeader>
       <ModalBody>
         <Form>
-          <FormControl placeholder="Введите название бренда" />
+          <FormControl
+            placeholder="Введите название бренда"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
         </Form>
       </ModalBody>
       <ModalFooter>
         <Button variant="outline-danger" onClick={onHide}>
           Закрыть
         </Button>
-        <Button variant="outline-success" onClick={onHide}>
+        <Button variant="outline-success" onClick={addBrand}>
           Добавить
         </Button>
       </ModalFooter>
