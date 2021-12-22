@@ -6,27 +6,26 @@ const ApiError = require('../error/ApiError');
 class DeviceController {
   async create(req, res, next) {
     try {
-      const { name, price, brandId, typeId, info } = req.body;
+      let { name, price, brandId, typeId, info } = req.body;
       const { img } = req.files;
       let fileName = uuid.v4() + '.jpg';
       img.mv(path.resolve(__dirname, '..', 'static', fileName));
+      const device = await Device.create({ name, price, brandId, typeId, img: fileName });
 
       if (info) {
         info = JSON.parse(info);
-        info.array.forEach((element) =>
+        info.forEach((i) =>
           DeviceInfo.create({
-            title: element.title,
-            description: element.description,
+            title: i.title,
+            description: i.description,
             deviceId: device.id,
           }),
         );
       }
 
-      const device = await Device.create({ name, price, brandId, typeId, img: fileName });
-
       return res.json(device);
-    } catch (error) {
-      next(ApiError.badRequest(error.message));
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
     }
   }
 
@@ -46,7 +45,7 @@ class DeviceController {
       devices = await Device.findAndCountAll({ where: { typeId }, limit, offset });
     }
     if (brandId && typeId) {
-      devices = await Device.findAndCountAll({ where: { brandId, typeId }, limit, offset });
+      devices = await Device.findAndCountAll({ where: { typeId, brandId }, limit, offset });
     }
     return res.json(devices);
   }

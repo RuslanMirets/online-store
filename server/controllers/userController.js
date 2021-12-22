@@ -6,11 +6,12 @@ const { User, Basket } = require('../models/models');
 const generateJwt = (id, email, role) => {
   return jwt.sign({ id, email, role }, process.env.SECRET_KEY, { expiresIn: '24h' });
 };
+
 class UserController {
   async registration(req, res, next) {
     const { email, password, role } = req.body;
     if (!email || !password) {
-      return next(ApiError.badRequest('Некорректный email или пароль'));
+      return next(ApiError.badRequest('Некорректный email или password'));
     }
     const candidate = await User.findOne({ where: { email } });
     if (candidate) {
